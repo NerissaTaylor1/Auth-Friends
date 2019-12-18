@@ -21,6 +21,8 @@ class FriendsList extends React.Component {
             })
             .catch(err => console.log(err));
     }
+
+
     render() {
 
         return (
@@ -36,7 +38,7 @@ class FriendsList extends React.Component {
                 <p>Loading Data</p>
 
                 <div>
-                    <FriendForm />
+                    <FriendForm friends={this.state.friends} />
 
                     {this.state.friends.map(friend => {
                         return (<div className="friend-list" key={friend.id}>

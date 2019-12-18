@@ -1,36 +1,50 @@
 import React, { useState } from 'react'
 import { axiosWithAuth } from '../utils/axiosWithAuth';
-
-const FriendForm = (props) => {
-    const [newFriend, setNewFriend] = useState("");
-
-    const addFriend = friend => {
-        const newFriend = {
-            id: new Date(),
-            name: "",
-            age: '',
-            email: '',
-            isPosting: false
-
-        }
-        setNewFriend([...props.friends], friend)
-    }
+const initialFriend = {
+    id: new Date(),
+    name: "",
+    age: '',
+    email: '',
+};
+const FriendForm = props => {
+    const [friend, setFriend] = useState(initialFriend);
 
 
     const handleChange = e => {
-        setNewFriend({
+
+        setFriend({
+            ...friend,
             [e.target.name]: e.target.value
 
         });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault();
         axiosWithAuth()
-            .post("/friends", newFriend)
-        addFriend(addFriend)
-        setNewFriend({ isPosting: true });
+            .post("http://localhost:5000/api/friends", friend)
+            .then(res => {
+                console.log(friend)
+                if (friend) {
+                    setFriend({ friends: res.data, friend })
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
+    // const updateFriends = (id, updateFriend) => {
+    //     axiosWithAuth().put(`http://localhost:5000/api/friends/${id}`, updateFriend)
+    //         .then(res => console.log(res))
+
+    // }
+    // const deleteFriend = id => {
+    //     axiosWithAuth().delete(`http://localhost:5000/api/friends/${id}`)
+    //         .then(res => {
+    //             console.log(res);
+    //             console.log(res.data);
+    //         })
+    // }
 
     return (
         <div>
@@ -38,24 +52,25 @@ const FriendForm = (props) => {
                 <input placeholder="name"
                     type="text"
                     name="name"
-                    value={newFriend.name}
+                    value={friend.name}
                     onChange={handleChange} />
                 <input
                     placeholder="age"
-                    type="text"
+                    type="number"
                     name="age"
-                    value={newFriend.age}
+                    value={friend.age}
                     onChange={handleChange} />
                 <input
                     placeholder="email"
-                    type="email"
+                    type="text"
                     name="email"
-                    value={newFriend.email}
+                    value={friend.email}
                     onChange={handleChange} />
                 <button type="submit">Add Friend</button>
             </form>
 
-        </div>
+        </div >
     )
 }
+
 export default FriendForm;
