@@ -30,7 +30,7 @@ const FriendForm = props => {
                 if (friend) {
                     setFriend({ friends: res.data, friend })
                 }
-                props.setFriends(props.addFriend)
+                props.addFriend(friend)
             })
             .catch(error => {
                 console.log(error)
@@ -69,7 +69,7 @@ const FriendForm = props => {
                     name="email"
                     value={friend.email}
                     onChange={handleChange} />
-                <button type="submit" onClick={props.addFriend}>Add Friend</button>
+                <button type="submit">Add Friend</button>
             </form>
 
         </div >
