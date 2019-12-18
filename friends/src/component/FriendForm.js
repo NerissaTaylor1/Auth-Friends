@@ -10,6 +10,8 @@ const FriendForm = props => {
     const [friend, setFriend] = useState(initialFriend);
 
 
+
+
     const handleChange = e => {
 
         setFriend({
@@ -19,8 +21,8 @@ const FriendForm = props => {
         });
     }
 
-    const handleSubmit = e => {
-        e.preventDefault();
+    const handleSubmit = event => {
+        event.preventDefault();
         axiosWithAuth()
             .post("http://localhost:5000/api/friends", friend)
             .then(res => {
@@ -28,6 +30,7 @@ const FriendForm = props => {
                 if (friend) {
                     setFriend({ friends: res.data, friend })
                 }
+                props.setFriends(props.addFriend)
             })
             .catch(error => {
                 console.log(error)
@@ -66,7 +69,7 @@ const FriendForm = props => {
                     name="email"
                     value={friend.email}
                     onChange={handleChange} />
-                <button type="submit">Add Friend</button>
+                <button type="submit" onClick={props.addFriend}>Add Friend</button>
             </form>
 
         </div >

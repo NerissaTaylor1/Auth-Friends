@@ -7,9 +7,20 @@ class FriendsList extends React.Component {
     state = {
         friends: []
     };
+    intervalID;
     componentDidMount() {
         this.getData();
+
     }
+    componentWillUnmount() {
+        /*
+    //       stop getData() from continuing to run even
+    //       after unmounting this component
+    //     */
+        clearTimeout(this.intervalID);
+    }
+
+
     getData = () => {
         axiosWithAuth()
             .get("http://localhost:5000/api/friends")
@@ -18,11 +29,16 @@ class FriendsList extends React.Component {
                 this.setState({
                     friends: res.data
                 })
+                this.intervalID = setTimeout(this.getData.bind(this), 4000);
+
             })
             .catch(err => console.log(err));
     }
-
-
+    addFriend = (e) => {
+        const friend = e.target.value;
+        console.log(friend)
+        this.setState(friend => [...this.state.friends, friend])
+    }
     render() {
 
         return (
@@ -38,7 +54,7 @@ class FriendsList extends React.Component {
                 <p>Loading Data</p>
 
                 <div>
-                    <FriendForm friends={this.state.friends} />
+                    <FriendForm friends={this.state.friends} setFriends={this.addFriend} />
 
                     {this.state.friends.map(friend => {
                         return (<div className="friend-list" key={friend.id}>
