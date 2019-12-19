@@ -37,7 +37,7 @@ class FriendsList extends React.Component {
     addFriend = (friend) => {
 
         console.log(friend)
-        this.setState(friend => [...this.state.friends, friend])
+        this.setState({ friends: [...this.state.friends, friend] })
     }
     render() {
 
